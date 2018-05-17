@@ -1210,6 +1210,9 @@ void UIElement::UpdateLayout()
 			width = Max(width, position.x_ + child.GetWidth());
 			height = Max(height, position.y_ + child.GetHeight());
         }
+
+		width = Min(width, GetMaxWidth());
+		height = Min(height, GetMaxHeight());
 		
         layoutMinSize_ = IntVector2(width, height);
 		SetSize(width, height);

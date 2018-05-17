@@ -1170,7 +1170,7 @@ void UI::GetElementAt(UIElement*& result, UIElement* current, const IntVector2& 
                 if (hasChildren)
                     GetElementAt(result, element, position, enabledOnly);
                 // Layout optimization: if the element has no children, can break out after the first match
-                else if (parentLayoutMode != LM_FREE)
+                else if (parentLayoutMode != LM_FREE && parentLayoutMode != LM_CONTAINED)
                     break;
             }
             else
@@ -1182,7 +1182,7 @@ void UI::GetElementAt(UIElement*& result, UIElement* current, const IntVector2& 
                 }
                 // Layout optimization: if position is much beyond the visible screen, check how many elements we can skip,
                 // or if we already passed all visible elements
-                else if (parentLayoutMode != LM_FREE)
+                else if (parentLayoutMode != LM_FREE && parentLayoutMode != LM_CONTAINED)
                 {
                     if (!i)
                     {

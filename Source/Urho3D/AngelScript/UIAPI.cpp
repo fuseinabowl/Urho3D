@@ -120,6 +120,7 @@ static void RegisterUIElement(asIScriptEngine* engine)
     engine->RegisterEnumValue("LayoutMode", "LM_FREE", LM_FREE);
     engine->RegisterEnumValue("LayoutMode", "LM_HORIZONTAL", LM_HORIZONTAL);
     engine->RegisterEnumValue("LayoutMode", "LM_VERTICAL", LM_VERTICAL);
+    engine->RegisterEnumValue("LayoutMode", "LM_CONTAINED", LM_CONTAINED);
 
     engine->RegisterEnum("TraversalMode");
     engine->RegisterEnumValue("TraversalMode", "TM_BREADTH_FIRST", TM_BREADTH_FIRST);

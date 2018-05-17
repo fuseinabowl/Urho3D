@@ -80,6 +80,7 @@ static const char* layoutModes[] =
     "Free",
     "Horizontal",
     "Vertical",
+    "Contained",
     nullptr
 };
 
@@ -363,6 +364,11 @@ void UIElement::GetDebugDrawBatches(PODVector<UIBatch>& batches, PODVector<float
         case LM_VERTICAL:
             horizontalThickness += 2;
             break;
+
+		case LM_CONTAINED:
+			verticalThickness += 1;
+			horizontalThickness += 1;
+			break;
 
         default:
             break;
@@ -1186,6 +1192,28 @@ void UIElement::UpdateLayout()
             ++j;
         }
     }
+	else if (layoutMode_ == LM_CONTAINED)
+	{
+		int width = GetMinWidth();
+		int height = GetMinHeight();
+
+        for (unsigned i = 0; i < children_.Size(); ++i)
+        {
+			UIElement& child = *children_[i];
+
+            if (child.GetEnableAnchor())
+			{
+                child.UpdateAnchoring();
+			}
+
+			IntVector2 position = child.GetPosition();
+			width = Max(width, position.x_ + child.GetWidth());
+			height = Max(height, position.y_ + child.GetHeight());
+        }
+		
+        layoutMinSize_ = IntVector2(width, height);
+		SetSize(width, height);
+	}
     else
     {
         for (unsigned i = 0; i < children_.Size(); ++i)
@@ -1784,7 +1812,7 @@ void UIElement::SortChildren()
     {
         // Only sort when there is no layout
         /// \todo Order is not stable when children have same priorities
-        if (layoutMode_ == LM_FREE)
+        if (layoutMode_ == LM_FREE || layoutMode_ == LM_CONTAINED)
             Sort(children_.Begin(), children_.End(), CompareUIElements);
         sortOrderDirty_ = false;
     }
@@ -2019,7 +2047,7 @@ bool UIElement::FilterImplicitAttributes(XMLElement& dest) const
         if (!RemoveChildXML(dest, "Min Size"))
             return false;
     }
-    if (parent_ && parent_->layoutMode_ != LM_FREE)
+    if (parent_ && parent_->layoutMode_ != LM_FREE && parent_->layoutMode_ != LM_CONTAINED)
     {
         if (!RemoveChildXML(dest, "Position"))
             return false;

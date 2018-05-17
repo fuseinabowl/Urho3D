@@ -86,7 +86,9 @@ enum LayoutMode
     /// Layout child elements horizontally and resize them to fit. Resize element if necessary.
     LM_HORIZONTAL,
     /// Layout child elements vertically and resize them to fit. Resize element if necessary.
-    LM_VERTICAL
+    LM_VERTICAL,
+    /// Allow the first child element to be the size and alignment it wants. Resize this element if necessary.
+    LM_CONTAINED
 };
 
 /// Traversal mode for rendering.
